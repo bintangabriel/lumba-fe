@@ -298,12 +298,14 @@ export default function PredictingPage({ datasets }) {
                     placeholder="Select model"
                     name="method"
                     items={[
-                      { value: "unet", label: "UNett" },
-                      { value: "unet0", label: "UNett without Weights" },
-                      { value: "deeplab", label: "Deeplab" },
-                      { value: "deeplab0", label: "Deeplab without weights" },
-                      { value: "fcn", label: "Fcn" },
-                      { value: "fcn0", label: "Fcn without weights" },
+                      { value: "50_deeplab", label: "Deeplabv3 (resnet50)" },
+                      { value: "50_deeplab0", label: "Deeplabv3 (resnet50) without weighted BCE" },
+                      { value: "101_deeplab", label: "Deeplabv3 (resnet101)" },
+                      { value: "101_deeplab0", label: "Deeplabv3 (resnet101) without weighted BCE" },
+                      { value: "50_fcn", label: "Fcn (resnet50)" },
+                      { value: "50_fcn0", label: "Fcn (resnet 50) without weighted BCE" },
+                      { value: "101_fcn", label: "Fcn (resnet 101)" },
+                      { value: "101_fcn0", label: "Fcn (resnet 101) without weighted BCE" },
                     ]}
                     onChange={(formData, setFormData) => {
                       setMethod(formData.method);

@@ -40,10 +40,7 @@ const WorkspaceHome = () => {
           <h1>{workspaceName}</h1>
           <p>{desc}</p>
         </div>
-        {
-          type !== "object_segmentation" &&
-            <RecentDatasets workspaceName={workspaceName} datasets={datasets} type={type} />
-        }
+        <RecentDatasets workspaceName={workspaceName} datasets={datasets} type={type} />
         <RecentModels workspaceName={workspaceName} models={models} type={type} />
       </div>
     </>

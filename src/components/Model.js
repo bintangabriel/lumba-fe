@@ -25,6 +25,12 @@ export const metricsName = {
   r2_score: "R2 Score",
   mean_squared_error: "Mean Squared Error",
   root_mean_squared_error: "Root Mean Squared Error",
+  val_loss: "Loss",
+  val_accuracy: "Accuracy",
+  iou: "Iou",
+  val_precision: "Precision",
+  val_recall: "Recall",
+  val_dice: "Dice"
 };
 
 export const metricsNameByMethod = {
@@ -47,12 +53,17 @@ const algorithmName = {
   KMEANS: "K-Means",
   ARIMA: "ARIMA",
   LSTM: "LSTM",
+  deeplab: "Deeplab",
+  deeplab0: "Deeplab withou weights",
+  unet: "Unet",
+  fcn: "Fcn",
+  fcn0: "Fcn without weights"
 };
 
 const TestButton = ({ onClick, type }) => {
   return (
     <Button size="small" onClick={onClick} type={type} testModel>
-      Test Model
+      Use Model
     </Button>
   );
 };
@@ -117,9 +128,9 @@ export default function Model({
   const type = searchParams.get("type");
 
   const { deleteModel } =
-    type === "predicting"
-      ? useModels({ username, workspace, type })
-      : useForecastingModel({ workspace, username, type });
+    type === "forecasting"
+      ? useForecastingModel({ workspace, username, type })
+      : useModels({ username, workspace, type });
   const apiKey = type === "predicting" && useApiKey(id);
 
   const metrics = metrics_scores?.charAt(0) === "{" ? Object.keys(JSON.parse(metrics_scores)) : [];
@@ -200,6 +211,33 @@ export default function Model({
                     </FormModal>
                   </FormModalContextProvider>
 
+                  {type === 'object_segmentation' && 
+                    <div>
+                      <Button size='small' onClick={() => {
+                        let model_metadata = {
+                          'model_name': modelName.split(".")[0],
+                          'username': username,
+                          'workspace': workspace 
+                        }
+                        axios.post('http://127.0.0.1:8000/modeling/download/', model_metadata, { responseType: 'blob' })
+                        .then(response => {
+                          const url = window.URL.createObjectURL(new Blob([response.data]));
+                          const link = document.createElement('a');
+                          link.href = url;
+                          link.setAttribute('download', 'downloaded_model.pth'); // or extract file name from the response
+                          document.body.appendChild(link);
+                          link.click();
+                        })
+                        .catch(error => {
+                          console.error('There was an error!', error);
+                        });
+                      }
+                      }>
+                        Download
+                      </Button>
+                    </div>
+                  }
+
                   <FormModalContextProvider>
                     {type === "object_segmentation" && (
                       // TODO: change handleSubmit
@@ -208,30 +246,6 @@ export default function Model({
                       features={features}
                       type={type}
                       modelName={modelName}
-                      // handleSubmit={(formData) => {
-                      //   setIsTesting(true);
-                      //   const featureQueryString = Object.values(formData)
-                      //     .map((value) => `feature=${value}&`)
-                      //     .join("");
-                      //   axios
-                      //     .get(
-                      //       `${process.env.NEXT_PUBLIC_API_ROUTE}/modeling/predict/?modelname=${modelName}&${featureQueryString}username=${username}&workspace=${workspace}&type=${type}`,
-                      //       {
-                      //         headers: {
-                      //           Authorization: `Token ${getCookie("token")}`,
-                      //         },
-                      //       }
-                      //     )
-                      //     .then((res) => {
-                      //       const { result } = res.data;
-                      //       setResult(result);
-                      //       setIsTesting(false);
-                      //     })
-                      //     .catch((error) => {
-                      //       setResult(<span className="text-pink">An error occurred.</span>);
-                      //       setIsTesting(false);
-                      //     });
-                      // }}
                       />
                     )}
                     {algorithm === "KMEANS" && (

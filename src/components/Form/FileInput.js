@@ -39,6 +39,10 @@ export default function FileInput({ setFormData, setIsOpen, workspaceType }) {
 		}, 500);
 	};
 
+	const acceptTypes = workspaceType === 'object_segmentation'
+        ? "application/zip,application/x-zip-compressed,application/x-rar-compressed"
+        : ".csv";
+
 	return (
 		<>
 			<div className="relative pt-8 pb-3 flex flex-col items-center justify-center w-full rounded-sm ring-[1.5px] ring-gray/50">
@@ -49,7 +53,7 @@ export default function FileInput({ setFormData, setIsOpen, workspaceType }) {
 				<input
 					ref={inputRef}
 					type="file"
-					accept=".csv,image/jpeg,image/png,image/gif, application/zip, application/x-zip-compressed, application/x-rar-compressed"	
+					accept={acceptTypes}
 					className="absolute inset-0 w-full h-full opacity-0 z-1 cursor-pointer"
 					name="file"
 					multiple

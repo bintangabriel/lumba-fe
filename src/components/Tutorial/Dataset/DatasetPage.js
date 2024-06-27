@@ -9,6 +9,7 @@ import useDatasets from "../../../hooks/useDatasets";
 import useCookie from "../../../hooks/useCookie";
 import { useSearchParams } from "next/navigation";
 import InfoWarning from "../../Icon/InfoWarning";
+import toast, { Toaster } from "react-hot-toast";
 export default function DatasetPage() {
   const router = useRouter();
   const { workspaceName } = router.query;
@@ -24,6 +25,7 @@ export default function DatasetPage() {
 
   return (
     <div className="h-full flex flex-col">
+      <Toaster />
       <div className="flex items-center">
         <div className="flex-1">
           <Breadcrumb
@@ -43,17 +45,19 @@ export default function DatasetPage() {
             handleSubmit={(formData) => {
               setIsUploading(true);
               const dataset = new FormData();
-              if (type === "object_segmentation"){
-                dataset.append("file", formData?.file);
-              } else {
-                dataset.append("file", formData?.file);
-              }
-              console.log(dataset.get('file0'))
+              dataset.append("file", formData?.file);
               dataset.append("username", username);
               dataset.append("workspace", workspaceName);
               dataset.append("type", type);
-              console.log(dataset)
-              addDataset(dataset).then(() => setIsUploading(false));
+              addDataset(dataset).then(
+                () => {
+                  setIsUploading(false) 
+                }
+              ).catch(
+                () => {
+                  setIsUploading(false)
+                }
+              );  
             }}
             workspaceType={type}
           />

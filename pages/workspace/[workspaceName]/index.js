@@ -24,9 +24,9 @@ const WorkspaceHome = () => {
   const datasets = data.length > 3 ? data.slice(-3) : data;
 
   const { models: dataModels } =
-    type === "predicting"
-      ? useModels({ username, workspace: workspaceName, type })
-      : useForecastingModel({ workspace: workspaceName, username });
+    type === "forecasting"
+      ? useForecastingModel({ workspace: workspaceName, username })
+      : useModels({ username, workspace: workspaceName, type })
   const models = dataModels.length > 3 ? dataModels.slice(-3) : dataModels;
 
   const desc = workspaces?.filter((ws) => ws.name === workspaceName)[0]?.description;
@@ -40,11 +40,8 @@ const WorkspaceHome = () => {
           <h1>{workspaceName}</h1>
           <p>{desc}</p>
         </div>
-        {
-          type !== "object_segmentation" &&
-            <RecentDatasets workspaceName={workspaceName} datasets={datasets} type={type} />
-        }
-        <RecentModels workspaceName={workspaceName} models={models} type={type} />
+          <RecentDatasets workspaceName={workspaceName} datasets={datasets} type={type} />
+          <RecentModels workspaceName={workspaceName} models={models} type={type} />
       </div>
     </>
   );

@@ -91,7 +91,7 @@ const ComponentsIcon = () => {
 const links = [
   { label: "Home", icon: <HomeIcon />, href: "" },
   { label: "Datasets", icon: <DatasetsIcon />, href: "datasets" },
-  { label: "Cleaning", icon: <CleaningIcon />, href: "cleaning" },
+  // { label: "Cleaning", icon: <CleaningIcon />, href: "cleaning" },
   { label: "Modeling", icon: <ModelingIcon />, href: "modeling" },
 ];
 

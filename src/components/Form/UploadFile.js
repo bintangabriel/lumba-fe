@@ -5,7 +5,7 @@ import Close from "../Icon/Close";
 import FileInput from "./FileInput";
 import { csvFileToArray } from "../../helper/csvFileReader";
 
-export default function UploadFile({ buttonLabel, formLabel, CustomButton, handleSubmit, customButtonClass, workspaceType }) {
+export default function UploadFile({ buttonLabel, formLabel, CustomButton, handleSubmit, customButtonClass, workspaceType, onFileSelect }) {
   const { formData, setFormData, isOpen, setIsOpen } = useContext(FormModalContext);
 
   return (
@@ -55,7 +55,10 @@ export default function UploadFile({ buttonLabel, formLabel, CustomButton, handl
             </div>
             <div className="h-[1px] bg-gray/30 w-full absolute left-0 mt-2"></div>
           </div>
-          <FileInput workspaceType={workspaceType} setFormData={setFormData} setIsOpen={setIsOpen} />
+          <div className={workspaceType === 'object_segmentation' ? 'block' : 'hidden'}>
+            <p className="mb-3">Your dataset should include two folder (images and mask). The folder should contains the image for image training and its mask</p>
+          </div>
+          <FileInput workspaceType={workspaceType} setFormData={setFormData} setIsOpen={setIsOpen} onFileSelect={onFileSelect} />
         </form>
       </div>
     </>

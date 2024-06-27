@@ -3,6 +3,7 @@ import useFetch from "./useFetch";
 import { getCookie } from "../helper/cookies";
 import * as React from "react";
 import { DetailsModalContext } from "../context/DetailsModalContext";
+import { toast } from "react-hot-toast";
 
 const API_ROUTE = process.env.NEXT_PUBLIC_API_ROUTE;
 
@@ -33,6 +34,8 @@ const useDatasets = (workspace, username, type) => {
 
   const addDataset = async (dataset) => {
     try {
+      if (dataset.get('file') === 'undefined')
+        return
       setIsLoading(true);
       if (type !== 'object_segmentation'){
         const response = await axios.post(ADD_DATASET, dataset, {
@@ -53,6 +56,7 @@ const useDatasets = (workspace, username, type) => {
       }
 
     } catch (err) {
+      toast.error("Your dataset is not valid")
       setCustomMessage("An error occurred while uploading dataset");
       setVariant("error");
     } finally {
